@@ -28,10 +28,10 @@ final class PushBridge: NSObject, OSPushSubscriptionObserver {
 
     // MARK: - OSPushSubscriptionObserver
 
-    func onPushSubscriptionChange(
-        _ stateChanges: OSPushSubscriptionStateChanges
+    func onPushSubscriptionDidChange(
+        state: OSPushSubscriptionChangedState
     ) {
-        if let id = stateChanges.to.id, !id.isEmpty, id != playerId {
+        if let id = state.current.id, !id.isEmpty, id != playerId {
             playerId = id
             onPlayerId?(id)
         }

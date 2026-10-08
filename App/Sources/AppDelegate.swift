@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         OneSignal.Notifications.requestPermission({ _ in }, fallbackToSettings: false)
         // Tapping a push with a URL (e.g. the weekly digest deep link
         // https://stoopsave.com/app?digest=1) opens it in the WebView.
-        OneSignal.Notifications.clickListener = { event in
+        OneSignal.Notifications.addClickListener { event in
             if let url = event.notification.launchURL, !url.isEmpty {
                 NotificationCenter.default.post(name: .ssOpenURL, object: url)
             }
