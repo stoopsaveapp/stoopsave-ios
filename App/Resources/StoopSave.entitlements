@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Universal Links: lets https://stoopsave.com/app links (push taps,
+	     shared offers) open inside the app instead of Safari. Requires
+	     docs/apple-app-site-association.json deployed on the backend
+	     (see README). -->
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:stoopsave.com</string>
+	</array>
+	<!-- Push capability. Value is development for unsigned/local builds;
+	     Xcode manages this automatically once signing is set up. -->
+	<key>aps-environment</key>
+	<string>development</string>
+</dict>
+</plist>

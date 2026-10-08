@@ -1,0 +1,70 @@
+# StoopSave — iOS unsigned build (compile verification)
+#
+# The iOS app is a thin WKWebView shell around https://stoopsave.com/app —
+# the iOS twin of Android's MainActivity. This workflow:
+#   1. generates the Xcode project with xcodegen,
+#   2. resolves Swift packages (OneSignal),
+#   3. builds an UNSIGNED release .app on a macOS runner,
+#   4. packages it as an unsigned IPA and uploads it as an artifact.
+#
+# There is no Apple Developer account yet, so there is no signing, no
+# TestFlight, and no on-device install — this pipeline proves the Swift code
+# compiles and the bundle assembles. Device install comes later (see README).
+
+name: ios-build-unsigned
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "App/**"
+      - "project.yml"
+      - ".github/**"
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install xcodegen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Resolve Swift packages
+        run: >
+          xcodebuild
+          -project StoopSave.xcodeproj
+          -scheme StoopSave
+          -resolvePackageDependencies
+
+      - name: Build unsigned release
+        run: >
+          xcodebuild
+          -project StoopSave.xcodeproj
+          -scheme StoopSave
+          -sdk iphoneos
+          -configuration Release
+          -derivedDataPath build/derived
+          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGNING_REQUIRED=NO
+          build
+
+      - name: Package unsigned IPA
+        run: |
+          APP="$(find build/derived/Build/Products/Release-iphoneos -maxdepth 1 -name '*.app' | head -1)"
+          echo "Built: $APP"
+          test -n "$APP"
+          mkdir -p build/ipa/Payload
+          cp -R "$APP" build/ipa/Payload/
+          (cd build/ipa && zip -qr ../StoopSave-unsigned.ipa Payload)
+          ls -la build/StoopSave-unsigned.ipa
+
+      - name: Upload unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: StoopSave-unsigned-ipa
+          path: build/StoopSave-unsigned.ipa
+          if-no-files-found: error

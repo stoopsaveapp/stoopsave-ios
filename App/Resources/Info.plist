@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>StoopSave</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<!-- Document scanner -->
+	<key>NSCameraUsageDescription</key>
+	<string>StoopSave uses the camera to scan flyers and paper offers.</string>
+	<!-- "Use my location" (Discover nearby offers) -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>StoopSave uses your location to show offers near you. Your coordinates never leave the phone.</string>
+	<!-- Web fallback scanner / photo picker inside the WebView -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>StoopSave can use photos from your library when you add an offer.</string>
+	<!-- OAuth deep link: stoopsave://auth?session=... (mirrors Android) -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.stoopsave.app.auth</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>stoopsave</string>
+			</array>
+		</dict>
+	</array>
+	<!-- Modern launch screen (navy + logo, from the asset catalog) -->
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>LaunchBackground</string>
+		<key>UIImageName</key>
+		<string>LaunchLogo</string>
+	</dict>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
+</dict>
+</plist>

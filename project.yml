@@ -1,0 +1,57 @@
+# StoopSave — iOS shell (xcodegen)
+#
+# The iOS app is a thin WKWebView shell around the StoopSave web app
+# (https://stoopsave.com/app) — the iOS twin of Android's MainActivity
+# (com.stoopsave.app). Same web app, same window.StoopSaveApp bridge
+# contract (see App/Resources/bridge.js + App/Sources/BridgeDispatcher.swift).
+#
+# Native pieces:
+#   - VisionKit VNDocumentCameraViewController for scanDocument()
+#     (the iOS equivalent of Android's ML Kit document scanner)
+#   - OneSignal (Swift Package Manager) for push; same OneSignal app as Android
+#   - Camera / location permission helpers mirroring Android's settled-first pattern
+#   - Universal Links (applinks:stoopsave.com) mirroring Android's App Links
+#
+# CI: brew install xcodegen && xcodegen generate && xcodebuild … (see
+# .github/workflows/ios-build.yml). No signing: CODE_SIGNING_ALLOWED=NO.
+
+name: StoopSave
+
+options:
+  bundleIdPrefix: com.stoopsave
+  deploymentTarget:
+    iOS: "15.0"
+  createIntermediateGroups: true
+
+packages:
+  OneSignal:
+    url: https://github.com/OneSignal/OneSignal-iOS-SDK
+    from: 5.0.0
+
+targets:
+  StoopSave:
+    type: application
+    platform: iOS
+    sources:
+      - path: App/Sources
+    resources:
+      - path: App/Resources/bridge.js
+      - path: App/Assets.xcassets
+    info:
+      path: App/Resources/Info.plist
+    entitlements:
+      path: App/Resources/StoopSave.entitlements
+    dependencies:
+      - package: OneSignal
+        product: OneSignalFramework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.stoopsave.app
+        PRODUCT_NAME: StoopSave
+        SWIFT_VERSION: "5"
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGNING_ALLOWED: "NO"
+        CODE_SIGNING_REQUIRED: "NO"
+        TARGETED_DEVICE_FAMILY: "1,2"
